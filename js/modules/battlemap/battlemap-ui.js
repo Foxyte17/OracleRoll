@@ -375,7 +375,7 @@ function exportBattleMapPng() {
       const x = labelColW + c * cellSize, y = labelRowH + r * cellSize;
       ctx.fillStyle = bmCellColorHex(r, c);
       ctx.fillRect(x, y, cellSize, cellSize);
-      ctx.strokeStyle = '#2f3948';
+      ctx.strokeStyle = '#3a4453';
       ctx.lineWidth = SCALE;
       ctx.strokeRect(x, y, cellSize, cellSize);
     }
@@ -418,7 +418,7 @@ function exportBattleMapPng() {
     else { ctx.arc(cx, cy, rad, 0, Math.PI * 2); }
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = '#e0b968';
+    ctx.fillStyle = '#e6e0cf';
     ctx.font = pionFont + 'px Georgia, serif';
     ctx.fillText(p.name, cx, cy - rad - 4 * SCALE);
   });
