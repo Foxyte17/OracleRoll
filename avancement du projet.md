@@ -4,8 +4,8 @@
 
 ## 1. État actuel
 
-- **Architecture modulaire** : `oracleroll.html` (475 lignes, zéro code inline) + 7 fichiers CSS + 14 fichiers JS, tous en chemins relatifs.
-- **Ordre de chargement des scripts : critique, ne jamais modifier** (lignes 460-473 d'`oracleroll.html`) : `utils.js` → `storage.js` → `navigation.js` → `progress-bar.js` → `dice-engine.js` → `dice-ui.js` → `oracle-engine.js` → `oracle-ui.js` → `deck-engine.js` → `deck-ui.js` → `editor.js` → `battlemap-engine.js` → `battlemap-ui.js` → `app.js`.
+- **Architecture modulaire** : `index.html` (475 lignes, zéro code inline) + 7 fichiers CSS + 14 fichiers JS, tous en chemins relatifs.
+- **Ordre de chargement des scripts : critique, ne jamais modifier** (lignes 460-473 d'`index.html`) : `utils.js` → `storage.js` → `navigation.js` → `progress-bar.js` → `dice-engine.js` → `dice-ui.js` → `oracle-engine.js` → `oracle-ui.js` → `deck-engine.js` → `deck-ui.js` → `editor.js` → `battlemap-engine.js` → `battlemap-ui.js` → `app.js`.
 - **Non responsive** : aucune media query dans `css/`, layout fixe `.app { max-width: 720px }`. Interface à adapter en priorité pour tablette (portrait et paysage).
 - **Problème ouvert** : sur tablette, l'ouverture du dossier complet en local n'affiche pas l'interface (chargement des 21 ressources CSS/JS en cause). Diagnostic en cours (D1–D4).
 
@@ -34,7 +34,7 @@ Chargement de decks Card Editor par URL de manifest GitHub dans l'onglet Tirage.
 - **Conformité vérifiée** : périmètre respecté (4 fichiers), plus d'`id` injecté dans les handlers (index `data-idx`), ids garantis uniques à la normalisation, étape 6 (carte entière + Pivoter) livrée.
 
 **Fichiers de la mission** (seuls modifiables pour ce chantier) :
-- `js/modules/deck/deck-engine.js`, `js/modules/deck/deck-ui.js`, `oracleroll.html`, `css/modules/deck.css`.
+- `js/modules/deck/deck-engine.js`, `js/modules/deck/deck-ui.js`, `index.html`, `css/modules/deck.css`.
 - **Interdits** : `js/core/storage.js`, `js/app.js`, `js/modules/editor/editor.js`, l'ordre des `<script>`, les autres modules/CSS.
 
 ## 4. En attente / prochaines étapes
