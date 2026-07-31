@@ -7,7 +7,7 @@
 - **Architecture modulaire** : `index.html` (475 lignes, zéro code inline) + 7 fichiers CSS + 14 fichiers JS, tous en chemins relatifs.
 - **Ordre de chargement des scripts : critique, ne jamais modifier** (lignes 460-473 d'`index.html`) : `utils.js` → `storage.js` → `navigation.js` → `progress-bar.js` → `dice-engine.js` → `dice-ui.js` → `oracle-engine.js` → `oracle-ui.js` → `deck-engine.js` → `deck-ui.js` → `editor.js` → `battlemap-engine.js` → `battlemap-ui.js` → `app.js`.
 - **Non responsive** : aucune media query dans `css/`, layout fixe `.app { max-width: 720px }`. Interface à adapter en priorité pour tablette (portrait et paysage).
-- **Problème ouvert** : sur tablette, l'ouverture du dossier complet en local n'affiche pas l'interface (chargement des 21 ressources CSS/JS en cause). Diagnostic en cours (D1–D4).
+- **Résolu — affichage tablette** : le CSS/JS ne se chargeait pas en local sur tablette (Android ouvre via `content://` au lieu de `file:///`, les chemins relatifs ne se résolvent pas). Solution : **GitHub Pages** pour OracleRoll. Le fichier a été renommé `oracleroll.html` → `index.html` (servi automatiquement par Pages). URL : `https://Foxyte17.github.io/OracleRoll/`.
 
 ## 2. Fonctionnalités en place
 
@@ -39,11 +39,12 @@ Chargement de decks Card Editor par URL de manifest GitHub dans l'onglet Tirage.
 
 ## 4. En attente / prochaines étapes
 
-1. **Affichage tablette** (priorité) : diagnostic D1–D4 + passage responsive (media queries, toute l'interface lisible sur tablette, avant le PC). Prompt transmis au builder.
+1. **Passage responsive** (priorité) : media queries, toute l'interface lisible sur tablette portrait et paysage.
 2. Vérification du retour builder sur le prompt responsive.
 
 ## 5. Règles de travail
 
+- **OracleRoll → GitHub Pages** : pour la tablette, OracleRoll est servie via GitHub Pages (`https://Foxyte17.github.io/OracleRoll/`). Tout push sur la branche `main` met à jour le site. Ne pas confondre avec les autres projets du workspace qui restent en local.
 - Ne jamais modifier l'ordre de chargement des scripts ni renommer des fonctions sans tout tester.
 - Tester dans un navigateur après chaque changement (les 5 onglets).
 - Proposer les choix avant de coder pour les décisions structurantes ; privilégier les solutions simples et robustes.
