@@ -89,7 +89,7 @@
 }
 .bm-cell {
   aspect-ratio: 1;
-  border: 1px solid rgba(230, 224, 207, 0.28);
+  border: 1px solid rgba(20, 24, 31, 0.22);
   cursor: pointer;
   box-sizing: border-box;
 }
