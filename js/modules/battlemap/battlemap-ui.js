@@ -69,7 +69,7 @@ function renderBmPionsOverlay() {
       : `<div class="bm-pion-dot bm-shape-${shape}" style="background:${p.color};"></div>`;
     layer.insertAdjacentHTML('beforeend',
       `<div class="bm-pion ${selected ? 'selected' : ''}" data-pion-id="${p.id}" style="position:absolute; left:${left}px; top:${top}px; width:${cellRect.width}px; height:${cellRect.height}px;">
-        <div class="bm-pion-name">${p.name}</div>
+        <div class="bm-pion-name">${escapeHtmlText(p.name)}</div>
         ${dotHtml}
       </div>`
     );
@@ -235,7 +235,7 @@ function renderBmPionList() {
   }
   list.innerHTML = bmState.pions.map(p => `
     <div class="bm-pion-row" style="flex-wrap:wrap;">
-      <input type="text" class="deck-card-field" style="flex:1; min-width:100px;" value="${p.name.replace(/"/g, '&quot;')}" oninput="updateBmPionName('${p.id}', this.value)">
+      <input type="text" class="deck-card-field" style="flex:1; min-width:100px;" value="${escapeHtmlText(p.name)}" oninput="updateBmPionName('${p.id}', this.value)">
       <div style="display:flex; gap:4px;">
         ${BM_SHAPES.map(sh => `<button type="button" class="bm-shape-btn ${sh === (p.shape || 'rond') ? 'active' : ''}" title="${sh}" onclick="updateBmPionShape('${p.id}','${sh}')">${BM_SHAPE_LABELS[sh]}</button>`).join('')}
       </div>

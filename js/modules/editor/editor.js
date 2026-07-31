@@ -73,7 +73,7 @@ function renderEditorUniverseOptions() {
   const select = document.getElementById('editor-universe');
   const previous = select.value;
   select.innerHTML = Object.keys(universes).map(key =>
-    `<option value="${key}">${universes[key].label}</option>`
+    `<option value="${key}">${escapeHtmlText(universes[key].label)}</option>`
   ).join('');
   if (universes[previous]) select.value = previous;
 }
@@ -129,7 +129,7 @@ function renderExistingUniverses() {
   const keys = Object.keys(universes);
   container.innerHTML = keys.map(key => `
     <div class="existing-table-item">
-      <div>${universes[key].label} <span class="meta">— ${universes[key].tables.length} table${universes[key].tables.length > 1 ? 's' : ''}</span></div>
+      <div>${escapeHtmlText(universes[key].label)} <span class="meta">— ${universes[key].tables.length} table${universes[key].tables.length > 1 ? 's' : ''}</span></div>
       <div style="display:flex; gap:6px;">
         <button class="icon-btn" onclick="personalizeUniverse('${key}')" title="Personnaliser">${gearIconSvg}</button>
         ${!universes[key].builtIn ? `<button onclick="deleteUniverse('${key}')">Supprimer</button>` : ''}
@@ -205,13 +205,13 @@ function renderEditorGridHtml(draft) {
   document.getElementById('editor-grid-title').textContent = `Remplir : ${draft.label} (D${draft.dice})`;
   let html = `<tr><th>D${draft.dice}</th>` +
     draft.columns.map(c => {
-      const label = (c.label || '').toString().replace(/"/g, '&quot;');
+      const label = escapeHtmlText(c.label);
       return `<th><input class="col-header-input" data-colkey="${c.key}" value="${label}"></th>`;
     }).join('') + '</tr>';
   draft.rows.forEach(row => {
     html += `<tr><td>${row.v}</td>` +
       draft.columns.map(c => {
-        const val = (row[c.key] || '').toString().replace(/"/g, '&quot;');
+        const val = escapeHtmlText(row[c.key]);
         return `<td><input data-row="${row.v}" data-col="${c.key}" value="${val}"></td>`;
       }).join('') + '</tr>';
   });
@@ -335,7 +335,7 @@ function renderExistingTables() {
       ? '<p class="legend" style="margin:0;">Aucune table dans cette catégorie pour l\'instant.</p>'
       : u.tables.map(t => `
           <div class="existing-table-item">
-            <div>${t.label} <span class="meta">— D${t.dice}</span></div>
+            <div>${escapeHtmlText(t.label)} <span class="meta">— D${t.dice}</span></div>
             <div style="display:flex; gap:6px;">
               <button class="icon-btn" onclick="copyTableToClipboard('${uKey}','${t.id}')" title="Copier cette table">${copyIconSvg}</button>
               <button class="icon-btn" onclick="editTable('${uKey}','${t.id}')" title="Modifier">${gearIconSvg}</button>
@@ -346,7 +346,7 @@ function renderExistingTables() {
     return `<div class="table-category">
       <div class="table-category-header-row">
         <button class="table-category-toggle" onclick="toggleTableCategory('${uKey}')">
-          <span class="chevron">${isOpen ? '▾' : '▸'}</span> ${u.label} <span class="meta">(${u.tables.length})</span>
+          <span class="chevron">${isOpen ? '▾' : '▸'}</span> ${escapeHtmlText(u.label)} <span class="meta">(${u.tables.length})</span>
         </button>
         <button class="icon-btn paste-icon" ${pasteDisabled ? 'disabled' : ''} onclick="pasteTableIntoCategory('${uKey}')" title="${pasteDisabled ? 'Copie une table d\'abord' : 'Coller ici'}">${pasteIconSvg}</button>
       </div>

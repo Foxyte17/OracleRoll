@@ -79,8 +79,8 @@ function renderCustomCardHtml(card) {
   return `<div class="custom-card">
     ${iconShape ? `<svg class="custom-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">${iconShape}</svg>` : ''}
     <div class="custom-card-emblem">${CARD_EMBLEM_SVG}</div>
-    <div class="custom-card-name-wrap"><div class="custom-card-name">${card.name}</div></div>
-    ${card.description ? `<div class="custom-card-desc">${card.description}</div>` : ''}
+    <div class="custom-card-name-wrap"><div class="custom-card-name">${escapeHtmlText(card.name)}</div></div>
+    ${card.description ? `<div class="custom-card-desc">${escapeHtmlText(card.description)}</div>` : ''}
   </div>`;
 }
 
@@ -107,14 +107,6 @@ function resetCustomDeck(context) {
   updateDeckStatusDisplay(context, currentDeckId);
   document.getElementById(context + '-deck-result').innerHTML =
     'Nouvelle session : le deck est mélangé.';
-}
-
-function escapeHtmlText(value) {
-  return String(value == null ? '' : value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 function renderImageCardHtml(card, drawIndex) {
@@ -187,7 +179,7 @@ function renderDeckEditorUniverseOptions() {
   const select = document.getElementById('deck-editor-universe');
   const previous = select.value;
   select.innerHTML = '<option value="">Aucun univers</option>' +
-    Object.keys(universes).map(key => `<option value="${key}">${universes[key].label}</option>`).join('');
+    Object.keys(universes).map(key => `<option value="${key}">${escapeHtmlText(universes[key].label)}</option>`).join('');
   select.value = previous;
 }
 
@@ -217,12 +209,12 @@ function renderDeckEditorGrid() {
   container.innerHTML = draftDeck.cards.map((card, i) => `
     <div class="deck-card-row">
       <div class="deck-card-row-top">
-        <input type="text" class="deck-card-field" placeholder="Nom de la carte" value="${(card.name || '').replace(/"/g, '&quot;')}" oninput="updateDeckCardField(${i}, 'name', this.value)">
+        <input type="text" class="deck-card-field" placeholder="Nom de la carte" value="${escapeHtmlText(card.name)}" oninput="updateDeckCardField(${i}, 'name', this.value)">
         <button type="button" class="deck-card-icon-btn ${card.icon ? 'has-icon' : ''}" onclick="openCardIconPicker(${i})" title="Icône de la carte">
           ${card.icon && ICON_LIBRARY[card.icon] ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" style="width:18px;height:18px;">${ICON_LIBRARY[card.icon]}</svg>` : cardIconSvg}
         </button>
       </div>
-      <textarea class="deck-card-field" placeholder="Description (optionnelle)" oninput="updateDeckCardField(${i}, 'description', this.value)">${card.description || ''}</textarea>
+      <textarea class="deck-card-field" placeholder="Description (optionnelle)" oninput="updateDeckCardField(${i}, 'description', this.value)">${escapeHtmlText(card.description)}</textarea>
       <button onclick="removeDeckCardRow(${i})">Supprimer la carte</button>
     </div>
   `).join('');
@@ -327,7 +319,7 @@ function renderDeckEditorExisting() {
   container.innerHTML = cardDecks.map(d => {
     const universeLabel = d.universeKey && universes[d.universeKey] ? universes[d.universeKey].label : 'Aucun univers';
     return `<div class="existing-table-item">
-      <div>${d.label} <span class="meta">— ${universeLabel} · ${d.cards.length} carte${d.cards.length > 1 ? 's' : ''}</span></div>
+      <div>${escapeHtmlText(d.label)} <span class="meta">— ${escapeHtmlText(universeLabel)} · ${d.cards.length} carte${d.cards.length > 1 ? 's' : ''}</span></div>
       <div style="display:flex; gap:6px;">
         <button class="icon-btn" onclick="editDeck('${d.id}')" title="Modifier">${gearIconSvg}</button>
         <button onclick="deleteDeck('${d.id}')">Supprimer</button>

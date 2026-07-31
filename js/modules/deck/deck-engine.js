@@ -20,7 +20,6 @@ const suitMeanings = {
 };
 
 let deck = [];
-let jokersRemoved = 0;
 
 function buildDeck() {
   deck = [];
@@ -31,7 +30,6 @@ function buildDeck() {
   });
   deck.push({ isJoker: true, label: "Joker" });
   deck.push({ isJoker: true, label: "Joker" });
-  jokersRemoved = 0;
   updateDeckStatus();
 }
 

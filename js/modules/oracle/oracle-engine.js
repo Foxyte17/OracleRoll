@@ -58,13 +58,13 @@ function updateOracleAnimToggleButton() {
 
 function renderOracleTable(highlightValue, mixedMap) {
   const t = currentTable;
-  let html = `<tr><th>D${t.dice}</th>` + t.columns.map(c => `<th>${c.label}</th>`).join('') + '</tr>';
+  let html = `<tr><th>D${t.dice}</th>` + t.columns.map(c => `<th>${escapeHtmlText(c.label)}</th>`).join('') + '</tr>';
   t.rows.forEach(row => {
     const isHi = !mixedMap && row.v === highlightValue;
     html += `<tr class="${isHi ? 'highlight' : ''}"><td>${row.v}</td>` +
       t.columns.map(c => {
         const cellHi = mixedMap && mixedMap[c.key] === row.v;
-        return `<td class="${cellHi ? 'cell-highlight' : ''}">${row[c.key]}</td>`;
+        return `<td class="${cellHi ? 'cell-highlight' : ''}">${escapeHtmlText(row[c.key])}</td>`;
       }).join('') + '</tr>';
   });
   document.getElementById('oracle-table').innerHTML = html;
@@ -124,12 +124,12 @@ function finishOracleRoll(roll) {
 
   if (category === 'all') {
     document.getElementById('oracle-result').innerHTML =
-      `<div class="total">${t.columns.map(c => row[c.key]).join(' · ')}</div>
+      `<div class="total">${t.columns.map(c => escapeHtmlText(row[c.key])).join(' · ')}</div>
        <div class="detail">D${t.dice} = ${roll}</div>`;
   } else {
     const colLabel = t.columns.find(c => c.key === category).label;
     document.getElementById('oracle-result').innerHTML =
-      `<div class="total">${row[category]}</div>
+      `<div class="total">${escapeHtmlText(row[category])}</div>
        <div class="detail">${colLabel} (D${t.dice} = ${roll})</div>`;
   }
 }
@@ -155,7 +155,7 @@ function rollOracleMixed() {
   box.innerHTML = `<div class="oracle-mixed-reels">` +
     t.columns.map((c, idx) => `
       <div class="oracle-mixed-reel-col">
-        <div class="oracle-mixed-reel-label">${c.label}</div>
+        <div class="oracle-mixed-reel-label">${escapeHtmlText(c.label)}</div>
         <div class="oracle-mixed-reel-wrap"><div class="oracle-mixed-reel-track" id="oracle-mixed-reel-track-${idx}">` +
           reelsByColumn[idx].map(v => `<div class="oracle-mixed-reel-item">${v}</div>`).join('') +
         `</div></div>
@@ -198,7 +198,7 @@ function finishOracleRollMixed(finalRolls) {
     const roll = finalRolls[idx];
     const row = t.rows.find(r => r.v === roll);
     mixedMap[c.key] = roll;
-    parts.push(`<div class="mixed-result-line"><span class="mixed-col-label">${c.label}</span> (D${t.dice} = ${roll}) : ${row[c.key]}</div>`);
+    parts.push(`<div class="mixed-result-line"><span class="mixed-col-label">${escapeHtmlText(c.label)}</span> (D${t.dice} = ${roll}) : ${escapeHtmlText(row[c.key])}</div>`);
   });
   renderOracleTable(null, mixedMap);
   document.getElementById('oracle-result').innerHTML = parts.join('');

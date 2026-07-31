@@ -45,11 +45,11 @@ function displayDiceResult(sides, count, mod, rolls) {
 
   if (diceMode === 'separation') {
     box.innerHTML =
-      `<div class="detail" style="margin-bottom:8px;">${count}D${sides} — lancers séparés</div>
+      `<div class="detail" style="margin-bottom:8px;">${count}D${sides} — lancers séparés${modText}</div>
        <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
          ${rolls.map((r, i) => `<div style="text-align:center;">
-           <div class="total" style="font-size:1.3rem;">${r}</div>
-           <div class="detail">Dé ${i + 1}</div>
+           <div class="total" style="font-size:1.3rem;">${r + mod}</div>
+           <div class="detail">Dé ${i + 1} [${r}]${modText}</div>
          </div>`).join('')}
        </div>`;
   } else if (diceMode === 'soustraction') {

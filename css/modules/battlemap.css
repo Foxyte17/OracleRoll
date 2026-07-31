@@ -89,7 +89,7 @@
 }
 .bm-cell {
   aspect-ratio: 1;
-  border: 1px solid var(--panel-line);
+  border: 1px solid rgba(230, 224, 207, 0.12);
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -132,7 +132,8 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.58rem;
-  color: var(--brass-bright);
+  color: #5f9dc4;
+  text-shadow: 0 1px 2px rgba(20, 24, 31, 0.85);
   white-space: nowrap;
   pointer-events: none;
 }

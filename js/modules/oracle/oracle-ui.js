@@ -10,7 +10,7 @@ function renderUniverseGrid() {
     const icon = getUniverseIcon(key);
     return `<button class="universe-btn" onclick="openUniverse('${key}')">
       <svg class="universe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">${icon}</svg>
-      <span>${u.label}</span>
+      <span>${escapeHtmlText(u.label)}</span>
     </button>`;
   }).join('');
 }
@@ -35,7 +35,7 @@ function openUniverse(key) {
   } else {
     emptyMsg.style.display = 'none';
     container.innerHTML = universe.tables.map(t =>
-      `<button class="table-btn" onclick="openTable('${t.id}')">${t.label} <span style="color:var(--parchment-dim); font-size:0.8rem;">(D${t.dice})</span></button>`
+      `<button class="table-btn" onclick="openTable('${t.id}')">${escapeHtmlText(t.label)} <span style="color:var(--parchment-dim); font-size:0.8rem;">(D${t.dice})</span></button>`
     ).join('');
   }
 }
@@ -67,7 +67,7 @@ function openTable(tableId) {
 
   const quickSwitch = document.getElementById('oracle-quick-switch');
   quickSwitch.innerHTML = universes[currentUniverseKey].tables.map(t =>
-    `<option value="${t.id}" ${t.id === tableId ? 'selected' : ''}>${t.label}</option>`
+    `<option value="${t.id}" ${t.id === tableId ? 'selected' : ''}>${escapeHtmlText(t.label)}</option>`
   ).join('');
 
   const descBox = document.getElementById('oracle-table-description');
@@ -81,7 +81,7 @@ function openTable(tableId) {
   const select = document.getElementById('oracle-category');
   select.innerHTML = '<option value="all">Résultat complet</option>' +
     (currentTable.columns.length > 1 ? '<option value="mixed">Aléatoire</option>' : '') +
-    currentTable.columns.map(c => `<option value="${c.key}">${c.label}</option>`).join('');
+    currentTable.columns.map(c => `<option value="${c.key}">${escapeHtmlText(c.label)}</option>`).join('');
 
   updateFavoriteStarButton();
   renderOracleTable(null);
@@ -138,7 +138,7 @@ function renderFavoritesSection() {
   section.style.display = 'block';
   list.innerHTML = favorites.map(f => {
     const t = universes[f.universeKey].tables.find(tt => tt.id === f.tableId);
-    return `<button class="table-btn" onclick="openFavoriteTable('${f.universeKey}','${f.tableId}')">★ ${t.label} <span style="color:var(--parchment-dim); font-size:0.8rem;">— ${universes[f.universeKey].label}</span></button>`;
+    return `<button class="table-btn" onclick="openFavoriteTable('${f.universeKey}','${f.tableId}')">★ ${escapeHtmlText(t.label)} <span style="color:var(--parchment-dim); font-size:0.8rem;">— ${escapeHtmlText(universes[f.universeKey].label)}</span></button>`;
   }).join('');
 }
 
