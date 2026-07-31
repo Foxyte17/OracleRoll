@@ -59,7 +59,7 @@ function cardHtml(card) {
 function drawCards() {
   if (deck.length < 2) {
     document.getElementById('tirage-result').innerHTML =
-      "Plus assez de cartes — lance une nouvelle session.";
+      "Plus assez de cartes - lance une nouvelle session.";
     return;
   }
   const drawn = [];
@@ -85,8 +85,8 @@ function drawCards() {
   else dominant = null;
 
   const dominantText = dominant
-    ? `${dominant.suit.label} ${dominant.suit.symbol} — ${suitMeanings[dominant.suit.name]}`
-    : `Égalité — choisis la couleur la plus pertinente pour la narration`;
+    ? `${dominant.suit.label} ${dominant.suit.symbol} - ${suitMeanings[dominant.suit.name]}`
+    : `Égalité - choisis la couleur la plus pertinente pour la narration`;
 
   document.getElementById('tirage-result').innerHTML =
     `<div class="total">${total}</div>
