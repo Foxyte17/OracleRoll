@@ -404,7 +404,7 @@ function exportBattleMapPng() {
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
-  const pionFont = Math.max(9, cellSize * 0.18);
+  const pionFont = Math.max(11, cellSize * 0.24);
   bmState.pions.forEach(p => {
     const cx = labelColW + p.c * cellSize + cellSize / 2;
     const cy = labelRowH + p.r * cellSize + cellSize / 2;
@@ -418,8 +418,12 @@ function exportBattleMapPng() {
     else { ctx.arc(cx, cy, rad, 0, Math.PI * 2); }
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = '#e6e0cf';
     ctx.font = pionFont + 'px Georgia, serif';
+    ctx.lineWidth = 3 * SCALE;
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#14181f';
+    ctx.strokeText(p.name, cx, cy - rad - 4 * SCALE);
+    ctx.fillStyle = '#e6e0cf';
     ctx.fillText(p.name, cx, cy - rad - 4 * SCALE);
   });
 
