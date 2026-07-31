@@ -79,7 +79,7 @@
 .bm-pion-swatch.active { outline: 2px solid var(--brass-bright); }
 
 #bm-grid-wrap { position: relative; touch-action: none; }
-#bm-grid { display: grid; gap: 2px; }
+#bm-grid { display: grid; gap: 0; }
 .bm-label-col, .bm-label-row {
   display: flex;
   align-items: center;
