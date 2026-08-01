@@ -1,7 +1,7 @@
 function rollSelectedDie() {
   if (!selectedDie) return;
   const sides = selectedDie === 'custom'
-    ? (parseInt(document.getElementById('custom-sides').value, 10) || 1)
+    ? Math.min(1000, Math.max(2, parseInt(document.getElementById('custom-sides').value, 10) || 2))
     : selectedDie;
   const count = parseInt(document.getElementById('dice-count').value, 10);
   const mod = parseInt(document.getElementById('dice-mod').value, 10) || 0;

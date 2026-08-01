@@ -76,7 +76,7 @@ function rollOracle() {
   const t = currentTable;
   const finalRoll = Math.floor(Math.random() * t.dice) + 1;
 
-  if (!oracleAnimationEnabled) { finishOracleRoll(finalRoll); return; }
+  if (!oracleAnimationEnabled) { finishOracleRoll(finalRoll, t); return; }
 
   oracleRolling = true;
   document.getElementById('oracle-roll-btn').disabled = true;
@@ -110,14 +110,14 @@ function rollOracle() {
   });
 
   setTimeout(() => {
-    finishOracleRoll(finalRoll);
+    finishOracleRoll(finalRoll, t);
     oracleRolling = false;
     document.getElementById('oracle-roll-btn').disabled = false;
   }, animDuration + 60);
 }
 
-function finishOracleRoll(roll) {
-  const t = currentTable;
+function finishOracleRoll(roll, t) {
+  if (!t) t = currentTable;
   const row = t.rows.find(r => r.v === roll);
   renderOracleTable(roll);
   const category = document.getElementById('oracle-category').value;
@@ -138,7 +138,7 @@ function rollOracleMixed() {
   const t = currentTable;
   const finalRolls = t.columns.map(() => Math.floor(Math.random() * t.dice) + 1);
 
-  if (!oracleAnimationEnabled) { finishOracleRollMixed(finalRolls); return; }
+  if (!oracleAnimationEnabled) { finishOracleRollMixed(finalRolls, t); return; }
 
   oracleRolling = true;
   document.getElementById('oracle-roll-btn').disabled = true;
@@ -184,14 +184,14 @@ function rollOracleMixed() {
   });
 
   setTimeout(() => {
-    finishOracleRollMixed(finalRolls);
+    finishOracleRollMixed(finalRolls, t);
     oracleRolling = false;
     document.getElementById('oracle-roll-btn').disabled = false;
   }, animDuration + 60);
 }
 
-function finishOracleRollMixed(finalRolls) {
-  const t = currentTable;
+function finishOracleRollMixed(finalRolls, t) {
+  if (!t) t = currentTable;
   const mixedMap = {};
   const parts = [];
   t.columns.forEach((c, idx) => {

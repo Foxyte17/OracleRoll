@@ -36,8 +36,6 @@ function persistBattleMap() {
   StorageService.saveBattleMap(bmState);
 }
 
-function bmColLetter(i) { return String.fromCharCode(65 + i); }
-
 function bmOccupied(r, c) { return bmState.pions.some(p => p.r === r && p.c === c); }
 
 function bmCellColor(r, c) {
@@ -48,15 +46,6 @@ function bmCellColor(r, c) {
 function bmCellColorHex(r, c) {
   const override = bmState.cellOverrides[r + '-' + c];
   return BM_TERRAIN_HEX[override || bmState.texture];
-}
-
-function bmDistToSegment(px, py, x1, y1, x2, y2) {
-  const dx = x2 - x1, dy = y2 - y1;
-  const lenSq = dx * dx + dy * dy;
-  let t = lenSq === 0 ? 0 : ((px - x1) * dx + (py - y1) * dy) / lenSq;
-  t = Math.max(0, Math.min(1, t));
-  const cx = x1 + t * dx, cy = y1 + t * dy;
-  return Math.hypot(px - cx, py - cy);
 }
 
 function bmPointToRelative(e) {

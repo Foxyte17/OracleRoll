@@ -180,7 +180,7 @@ function renderDeckEditorUniverseOptions() {
   const previous = select.value;
   select.innerHTML = '<option value="">Aucun univers</option>' +
     Object.keys(universes).map(key => `<option value="${key}">${escapeHtmlText(universes[key].label)}</option>`).join('');
-  select.value = previous;
+  if (universes[previous]) select.value = previous;
 }
 
 function createDeckEditorGrid() {

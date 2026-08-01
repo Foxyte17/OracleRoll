@@ -159,6 +159,15 @@ function persistCustomTables() {
   StorageService.saveTables(data);
 }
 
+const RESERVED_COLUMN_KEYS = ['all', 'mixed'];
+
+function makeColumnKey(label, columns) {
+  let key = slugify(label);
+  if (!key) key = 'col_' + Date.now();
+  if (RESERVED_COLUMN_KEYS.includes(key) || columns.find(c => c.key === key)) key = key + '_' + Date.now();
+  return key;
+}
+
 function createEditorGrid() {
   const universeKey = document.getElementById('editor-universe').value;
   const name = document.getElementById('editor-name').value.trim();
@@ -171,8 +180,10 @@ function createEditorGrid() {
     return;
   }
 
-  const columns = columnsRaw.split(',').map(c => c.trim()).filter(Boolean)
-    .map(label => ({ key: label.toLowerCase().replace(/[^a-z0-9]+/g, '_'), label }));
+  const columns = [];
+  columnsRaw.split(',').map(c => c.trim()).filter(Boolean).forEach(label => {
+    columns.push({ key: makeColumnKey(label, columns), label });
+  });
 
   const rows = [];
   for (let i = 1; i <= dice; i++) {
@@ -245,8 +256,7 @@ function addColumnToDraft() {
   if (!label) { alert('Merci de donner un nom à la nouvelle colonne.'); return; }
   syncGridInputsToDraft();
 
-  let key = label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-  if (!key || draftTable.columns.find(c => c.key === key)) key = 'col_' + Date.now();
+  const key = makeColumnKey(label, draftTable.columns);
   const newCol = { key, label };
 
   if (newColumnPosition === 'left') draftTable.columns.unshift(newCol);
@@ -358,7 +368,9 @@ function renderExistingTables() {
 function exportTables() {
   const data = { universes: [], tables: {}, decks: cardDecks };
   Object.keys(universes).forEach(uKey => {
-    if (universes[uKey].custom) data.universes.push({ key: uKey, label: universes[uKey].label });
+    if (universes[uKey].custom || universes[uKey].personalized) {
+      data.universes.push({ key: uKey, label: universes[uKey].label, icon: universes[uKey].icon || null, builtIn: !!universes[uKey].builtIn });
+    }
     data.tables[uKey] = universes[uKey].tables.filter(t => t.custom);
   });
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -387,11 +399,14 @@ function importTables(event) {
       });
 
       let tableCount = 0;
+      let tableUpdated = 0;
       const tablesData = data.tables || data;
       Object.keys(tablesData).forEach(uKey => {
         if (!universes[uKey]) return;
         tablesData[uKey].forEach(t => {
-          if (!universes[uKey].tables.find(existing => existing.id === t.id)) { universes[uKey].tables.push(t); tableCount++; }
+          const existing = universes[uKey].tables.find(et => et.id === t.id);
+          if (existing) { universes[uKey].tables[universes[uKey].tables.indexOf(existing)] = t; tableUpdated++; }
+          else { universes[uKey].tables.push(t); tableCount++; }
         });
       });
 
@@ -410,8 +425,9 @@ function importTables(event) {
       renderExistingTables();
       renderDeckEditorExisting();
       renderTirageDecksList();
+      updateAppStats();
       statusBox.style.display = 'block';
-      statusBox.innerHTML = `<div class="detail">${universeCount} univers, ${tableCount} table${tableCount > 1 ? 's' : ''} et ${deckCount} deck${deckCount > 1 ? 's' : ''} importés avec succès.</div>`;
+      statusBox.innerHTML = `<div class="detail">${universeCount} univers, ${tableCount} table${tableCount > 1 ? 's' : ''} ajoutée${tableCount > 1 ? 's' : ''}, ${tableUpdated} mise${tableUpdated > 1 ? 's' : ''} à jour, ${deckCount} deck${deckCount > 1 ? 's' : ''} importés avec succès.</div>`;
     } catch (err) {
       statusBox.style.display = 'block';
       statusBox.innerHTML = `<div class="detail">Ce fichier n'est pas lisible. Vérifie qu'il s'agit bien d'un export d'oracleroll.</div>`;
